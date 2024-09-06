@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using ProductApi.Validation;
 
 namespace ProductApi.Enetities;
 
@@ -14,9 +15,10 @@ public class Product
     public decimal Price { get; private set; }
     public string Category { get; private set; } = string.Empty;
 
-    public Product(int id, string name, string description, decimal price, string category)
+    public Product(string name, string description, decimal price, string category)
     {
-        Id = id;
+        Validate(name, description, price, category);
+
         Name = name;
         Description = description;
         Price = price;
@@ -25,10 +27,17 @@ public class Product
 
     public void Update(string name, string description, decimal price, string category)
     {
+        Validate(name, description, price, category);
+
         Name = name;
         Description = description;
         Price = price;
         Category = category;
     }
 
+    private static void Validate(string name, string description, decimal price, string category)
+    {
+        Product? tempProduct = new(name, description, price, category);
+        ProductValidator.Validate(tempProduct);
+    }
 }
