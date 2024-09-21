@@ -8,7 +8,7 @@ public class Product
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public int Id { get; private set; }
+    public string Id { get; private set; }
     [BsonElement("Name")]
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
@@ -37,7 +37,6 @@ public class Product
 
     private static void Validate(string name, string description, decimal price, string category)
     {
-        Product? tempProduct = new(name, description, price, category);
-        ProductValidator.Validate(tempProduct);
+        ProductValidator.Validate(name, description, price, category);
     }
 }

@@ -17,11 +17,23 @@ internal class ProductContextSeed
 
     private static IEnumerable<Product> GetPreconfiguredProducts(string category = "Food")
     {
-        var autoFaker = new AutoFaker<Product>()
-             .RuleFor(p => p.Id, f => 0) // Skip the Id or set to a default value, if needed
-             .RuleFor(p => p.Category, f => category);
+        var products = new List<Product>();
 
-        return autoFaker.Generate(10);
+        try
+        {
+            var autoFaker = new AutoFaker<Product>()
+                .RuleFor(p => p.Id, f => Guid.NewGuid().ToString("N").Substring(0, 24)) // Skip the Id or set to a default value, if needed
+                .RuleFor(p => p.Category, f => category);
+
+            products = autoFaker.Generate(10);
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        return products;
     }
 
 }

@@ -6,9 +6,9 @@ namespace ProductApi.Services;
 
 public class ProductService : IProductService
 {
-    private readonly ProductContext _dbContext;
+    private readonly IProductContext _dbContext;
 
-    public ProductService(ProductContext dbContext)
+    public ProductService(IProductContext dbContext)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
@@ -18,7 +18,7 @@ public class ProductService : IProductService
         await _dbContext.Products.InsertOneAsync(product);
     }
 
-    public async Task<bool> DeleteProductAsync(int id)
+    public async Task<bool> DeleteProductAsync(string id)
     {
         FilterDefinition<Product> filter = Builders<Product>.Filter
             .Eq(p => p.Id, id);
@@ -31,13 +31,13 @@ public class ProductService : IProductService
             && result.DeletedCount > 0;
     }
 
-    public Task<Product> GetProductAsync(int id)
+    public Task<Product> GetProductAsync(string id)
     {
         return _dbContext.Products.Find(p => p.Id == id)
             .FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetProductByCategoryAsync(string category)
+    public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
     {
         FilterDefinition<Product> filter = Builders<Product>.Filter
             .Eq(p => p.Category, category);
@@ -47,7 +47,7 @@ public class ProductService : IProductService
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetProductByNameAsync(string name)
+    public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
         FilterDefinition<Product> filter = Builders<Product>.Filter
             .Eq(p => p.Name, name);
@@ -59,8 +59,9 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
-        return await _dbContext.Products.Find(p => true)
+        var products = await _dbContext.Products.Find(p => true)
             .ToListAsync();
+        return products;
     }
 
     public async Task<bool> UpdateProductAsync(Product product)

@@ -3,7 +3,7 @@ using ProductApi.Enetities;
 
 namespace ProductApi.Data;
 
-public class ProductContext
+public class ProductContext : IProductContext
 {
     public ProductContext(IConfiguration configuration)
     {
@@ -12,6 +12,7 @@ public class ProductContext
         Products = database.GetCollection<Product>(configuration.GetValue<string>("MongoDBSettings:CollectionName"));
 
         ProductContextSeed.SeedTestData(Products);
+
     }
 
     public IMongoCollection<Product> Products { get; }

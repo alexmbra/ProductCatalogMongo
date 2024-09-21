@@ -1,20 +1,22 @@
-﻿using ProductApi.Enetities;
-
-namespace ProductApi.Validation;
+﻿namespace ProductApi.Validation;
 
 public class ProductValidator
 {
-    public static void Validate(Product product)
+    public static void Validate(string name, string description, decimal price, string category)
     {
-        ArgumentNullException.ThrowIfNull(product);
+        // Validate each parameter directly
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(description);
+        ArgumentNullException.ThrowIfNull(category);
 
-        Validator<Product>.Validate(product, product =>
-        {
-            Validator<Product>.ValidateProperty(product.Id, product.Id > 0, ErrorMessages.IdMustBeGreaterThanZero);
-            Validator<Product>.ValidateProperty(product.Name, string.IsNullOrEmpty(product.Name), ErrorMessages.NameMustNotBeEmpty);
-            Validator<Product>.ValidateProperty(product.Description, string.IsNullOrEmpty(product.Description), ErrorMessages.DescriptionMustNotBeEmpty);
-            Validator<Product>.ValidateProperty(product.Price, product.Price > 0, ErrorMessages.PriceMustBeGreaterThanZero);
-            Validator<Product>.ValidateProperty(product.Category, !string.IsNullOrEmpty(product.Category), ErrorMessages.CategoryMustNotBeEmpty);
-        });
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException(ErrorMessages.NameMustNotBeEmpty);
+        if (string.IsNullOrEmpty(description))
+            throw new ArgumentException(ErrorMessages.DescriptionMustNotBeEmpty);
+        if (price <= 0)
+            throw new ArgumentException(ErrorMessages.PriceMustBeGreaterThanZero);
+        if (string.IsNullOrEmpty(category))
+            throw new ArgumentException(ErrorMessages.CategoryMustNotBeEmpty);
     }
 }
+

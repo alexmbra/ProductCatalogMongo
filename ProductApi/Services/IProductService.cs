@@ -5,10 +5,10 @@ namespace ProductApi.Services;
 public interface IProductService
 {
     Task<IEnumerable<Product>> GetProductsAsync();
-    Task<Product> GetProductAsync(int id);
-    Task<IEnumerable<Product>> GetProductByNameAsync(string name);
-    Task<IEnumerable<Product>> GetProductByCategoryAsync(string category);
+    Task<Product> GetProductAsync(string id);
+    Task<IEnumerable<Product>> GetProductsByNameAsync(string name);
+    Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
     Task AddProductAsync(Product product);
     Task<bool> UpdateProductAsync(Product product);
-    Task<bool> DeleteProductAsync(int id);
+    Task<bool> DeleteProductAsync(string id);
 }
