@@ -3,7 +3,7 @@ using ProductApi.Enetities;
 using ProductApi.Services;
 
 namespace ProductApi.Controllers;
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class ProductController : ControllerBase
 {
@@ -14,14 +14,17 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
+
+    [Route("Products", Name = "GetProducts")]  // This will map to /api/v1/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         var products = await _productService.GetProductsAsync();
         return Ok(products);
     }
 
-    [HttpGet("{id:length(24)}", Name = "GetProduct")]
+    [Route("{id:length(24)}", Name = "GetProductById")]  // This will map to /api/v1/Product/{id}
+    [HttpGet]
     public async Task<ActionResult<Product>> GetProduct(string id)
     {
         var product = await _productService.GetProductAsync(id);
