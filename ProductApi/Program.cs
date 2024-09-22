@@ -1,4 +1,5 @@
 
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.OpenApi.Models;
 using ProductApi.Services;
 
@@ -20,6 +21,37 @@ public class Program
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "MongoProductAPI", Version = "v1" });
         });
+
+        //// Check if the app is running in a Docker container
+        //if (builder.Environment.IsDevelopment())
+        //{
+        //    builder.WebHost.ConfigureKestrel(options =>
+        //    {
+        //        // HTTPS is enabled in development (local)
+        //        options.ListenAnyIP(8080); // HTTP port
+        //        options.ListenAnyIP(8001, listenOptions =>
+        //        {
+        //            listenOptions.UseHttps();
+        //        });
+        //    });
+        //}
+        //else
+        //{
+        //    // Disable HTTPS for Docker environment
+        //    builder.WebHost.ConfigureKestrel(options =>
+        //    {
+        //        options.ListenAnyIP(8080); // Only HTTP in Docker
+        //    });
+        //}
+
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.ConfigureHttpsDefaults(listenOptions =>
+            {
+                listenOptions.ServerCertificate = new X509Certificate2("https/ProductCatalogMongo.pfx", "Numsey2024");
+            });
+        });
+
 
         var app = builder.Build();
 

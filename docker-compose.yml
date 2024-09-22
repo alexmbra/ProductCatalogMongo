@@ -1,0 +1,13 @@
+services:
+  catalogdb:
+    image: mongo
+
+  productapi:
+    image: ${DOCKER_REGISTRY-}productapi
+    build:
+      context: .
+      dockerfile: ProductApi/Dockerfile
+
+    environment:
+    - ASPNETCORE_URLS=http://+:8080
+
