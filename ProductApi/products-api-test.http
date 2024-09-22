@@ -1,0 +1,40 @@
+### Get all products
+GET http://localhost:8080/api/v1/Product/Products
+Accept: application/json
+
+### Get product by ID
+GET http://localhost:8080/api/v1/Product/69e39116a24345c4aef8ad62
+Accept: application/json
+
+### Get products by name
+GET http://localhost:8080/api/v1/Product/ExampleProductName
+Accept: application/json
+
+### Get products by category
+GET http://localhost:8080/api/v1/Product/GetProductsByCategory/electronics
+Accept: application/json
+
+### Create a new product
+POST http://localhost:8080/api/v1/Product
+Content-Type: application/json
+
+{
+  "id": "60f7ebf53642a928ffec7f15",
+  "name": "New Product",
+  "category": "electronics",
+  "price": 199.99
+}
+
+### Update a product
+PUT http://localhost:8080/api/v1/Product/60f7ebf53642a928ffec7f15
+Content-Type: application/json
+
+{
+  "id": "60f7ebf53642a928ffec7f15",
+  "name": "Updated Product",
+  "category": "electronics",
+  "price": 249.99
+}
+
+### Delete a product
+DELETE http://localhost:8080/api/v1/Product/69e39116a24345c4aef8ad62
